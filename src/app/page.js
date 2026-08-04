@@ -1,4 +1,4 @@
-import { getProducts } from "./lib/actions/products";
+import { getProducts } from "@/lib/actions/products";
 
 export default async function Home() {
 
