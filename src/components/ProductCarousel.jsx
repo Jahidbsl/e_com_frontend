@@ -16,9 +16,18 @@ export default function ProductCarousel({ products = [] }) {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [scrollSnaps, setScrollSnaps] = useState([]);
 
-  const scrollPrev = useCallback(() => emblaApi && emblaApi.scrollPrev(), [emblaApi]);
-  const scrollNext = useCallback(() => emblaApi && emblaApi.scrollNext(), [emblaApi]);
-  const scrollTo = useCallback((i) => emblaApi && emblaApi.scrollTo(i), [emblaApi]);
+  const scrollPrev = useCallback(
+    () => emblaApi && emblaApi.scrollPrev(),
+    [emblaApi],
+  );
+  const scrollNext = useCallback(
+    () => emblaApi && emblaApi.scrollNext(),
+    [emblaApi],
+  );
+  const scrollTo = useCallback(
+    (i) => emblaApi && emblaApi.scrollTo(i),
+    [emblaApi],
+  );
 
   const onSelect = useCallback(() => {
     if (!emblaApi) return;
@@ -47,21 +56,20 @@ export default function ProductCarousel({ products = [] }) {
             >
               <button
                 type="button"
-                onClick={() => product.id && router.push(`/products/${product.id}`)}
+                onClick={() =>
+                  product.id && router.push(`/products/${product.id}`)
+                }
                 className="w-full cursor-pointer"
                 aria-label={`View details for ${product.name || "product"}`}
               >
                 {product.image ? (
-                  <Image
+                  <img
                     src={`${process.env.NEXT_PUBLIC_BASE_URL}${product.image}`}
                     alt={product.name || "Product image"}
-                    width={1920}
-                    height={900}
-                    className="w-full h-[70vh] object-cover"
-                    priority={i === 0}
+                    className="w-full h-[200px] object-cover rounded-md"
                   />
                 ) : (
-                  <div className="w-full h-[70vh] bg-gray-200 flex items-center justify-center text-gray-500">
+                  <div className="w-full h-[200px] bg-gray-200 flex items-center justify-center text-gray-500 rounded-md">
                     No Image Available
                   </div>
                 )}
@@ -72,7 +80,9 @@ export default function ProductCarousel({ products = [] }) {
                 </p>
               )}
               {product.price && (
-                <p className="text-zinc-500 dark:text-zinc-400">${product.price}</p>
+                <p className="text-zinc-500 dark:text-zinc-400">
+                  ${product.price}
+                </p>
               )}
             </div>
           ))}
