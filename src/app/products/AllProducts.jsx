@@ -12,11 +12,9 @@ const AllProducts = ({ products }) => {
         >
           <div>
             {product.image ? (
-              <Image
+              <img
                 src={`${process.env.NEXT_PUBLIC_BASE_URL}${product.image}`}
                 alt={product.name || "Product image"}
-                width={300}
-                height={200}
                 className="w-full h-[200px] object-cover rounded-md"
               />
             ) : (
