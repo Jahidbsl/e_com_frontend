@@ -11,7 +11,7 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "*.onrender.com", 
+        hostname: "e-com-backend-lr5z.onrender.com",
         pathname: "/**",
       },
     ],
