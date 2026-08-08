@@ -5,8 +5,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "**",
-        port: "",
+        hostname: "e-com-backend-lr5z.onrender.com",
         pathname: "/**",
       },
     ],
