@@ -1,9 +1,22 @@
 "use client";
 import { useCart } from "@/components/context/CartContext";
+import { getAccessToken } from "@/lib/auth";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const ProductDetails = ({ product }) => {
+  const router = useRouter();
+
   const { addToCart } = useCart();
+
+  const handleAddTocard = () => {
+    if (!getAccessToken()) {
+      router.push("/login")
+      return
+    }
+    addToCart(product)
+    
+  };
   if (!product) {
     return (
       <div className="py-24 text-center text-gray-500 dark:text-gray-400">
@@ -22,7 +35,6 @@ const ProductDetails = ({ product }) => {
     <section className="max-w-7xl mx-auto py-6 px-4 text-gray-900 dark:text-gray-100">
       <div className="bg-white dark:bg-black rounded-3xl shadow-xl border border-gray-200 dark:border-gray-800 overflow-hidden w-full">
         <div className="grid md:grid-cols-12 items-center">
-
           <div className="relative bg-gray-50 dark:bg-black md:col-span-7 h-[450px] md:h-[650px] flex items-center justify-center p-6 md:border-r border-gray-100 dark:border-gray-800 w-full">
             {product.image ? (
               <Image
@@ -75,12 +87,18 @@ const ProductDetails = ({ product }) => {
 
               <div className="mt-7 divide-y divide-gray-100 dark:divide-gray-800 text-sm sm:text-base">
                 <div className="flex justify-between py-2.5">
-                  <span className="text-gray-500 dark:text-gray-400">Category</span>
-                  <span className="font-bold">{product.category?.name || product.category}</span>
+                  <span className="text-gray-500 dark:text-gray-400">
+                    Category
+                  </span>
+                  <span className="font-bold">
+                    {product.category?.name || product.category}
+                  </span>
                 </div>
 
                 <div className="flex justify-between py-2.5">
-                  <span className="text-gray-500 dark:text-gray-400">Stock</span>
+                  <span className="text-gray-500 dark:text-gray-400">
+                    Stock
+                  </span>
                   <span className="font-bold">{product.stock}</span>
                 </div>
               </div>
@@ -88,7 +106,7 @@ const ProductDetails = ({ product }) => {
 
             <div className="flex flex-col sm:flex-row gap-3 mt-8">
               <button
-                onClick={() => addToCart(product)}
+                onClick={() => handleAddTocard()}
                 disabled={product.stock <= 0}
                 className={`flex-1 py-3 px-6 rounded-xl font-bold transition shadow-sm ${
                   product.stock > 0
@@ -99,9 +117,7 @@ const ProductDetails = ({ product }) => {
                 Add to Cart
               </button>
             </div>
-
           </div>
-
         </div>
       </div>
     </section>

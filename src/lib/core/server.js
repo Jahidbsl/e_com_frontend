@@ -19,10 +19,11 @@ export const serverMutation = async (path, data) => {
     },
     body: JSON.stringify(data),
   });
+  const text = await backend.text();
   if (!backend.ok) {
+    console.error("Backend Error Response:", text);
     throw new Error(`Failed to post data to the server: ${backend.status} ${backend.statusText}`);
   }
-  const text = await backend.text();
   return text ? JSON.parse(text) : null;
 };
 

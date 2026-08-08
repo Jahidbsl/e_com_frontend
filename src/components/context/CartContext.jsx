@@ -18,8 +18,15 @@ export const CartProvider = ({ children }) => {
       try {
         const initialCart = await getCartItems();
         if (initialCart) {
-          // Django API response er structure onujayi data set kora hocche
-          setCartItems(initialCart.items || initialCart.item || []);
+          // Handle both direct array or object containing items/cart_items
+          const items = Array.isArray(initialCart)
+            ? initialCart
+            : initialCart.items ||
+              initialCart.item ||
+              initialCart.cart_items ||
+              [];
+
+          setCartItems(items);
           setTotal(initialCart.total || 0);
         }
       } catch (error) {
@@ -30,24 +37,25 @@ export const CartProvider = ({ children }) => {
     fetchCart();
   }, []);
 
-  // Add product to cart
   const addToCart = async (product) => {
     try {
       const productId = product.id || product._id;
-
-      // Backend action call kora hocche (import kora function er nam onujayi)
       const response = await addCartItem({ product_id: productId });
 
-      if (response && response.cart) {
-        setCartItems(response.cart.items || response.cart.item || []);
-        setTotal(response.cart.total || 0);
+      if (response) {
+        const cartData = response.cart || response;
+        const items = Array.isArray(cartData)
+          ? cartData
+          : cartData.items || cartData.item || cartData.cart_items || [];
+
+        setCartItems(items);
+        setTotal(cartData.total || 0);
       }
     } catch (error) {
       console.error("Failed to add to cart:", error);
     }
   };
 
-  // Remove product from cart
   const removeFromCart = async (itemId) => {
     try {
       await removeCartItem(itemId);
@@ -59,7 +67,6 @@ export const CartProvider = ({ children }) => {
     }
   };
 
-  // Update product quantity in cart
   const updateCartItemQuantity = async (itemId, quantity) => {
     const item = cartItems.find(
       (cartItem) => (cartItem.id || cartItem._id) === itemId,
@@ -77,7 +84,6 @@ export const CartProvider = ({ children }) => {
     try {
       const response = await updateCartItemQuantityApi(itemId, quantity);
       if (response) {
-        // Optimistically update local state or refresh cart
         setCartItems((prevItems) =>
           prevItems.map((cartItem) =>
             (cartItem.id || cartItem._id) === itemId
@@ -90,7 +96,11 @@ export const CartProvider = ({ children }) => {
       console.error("Failed to update cart quantity:", error);
     }
   };
-
+  const clearCart = () => {
+    setCartItems([]);
+    setTotal(0);
+    localStorage.removeItem("cart");
+  };
   return (
     <cartContext.Provider
       value={{
@@ -99,6 +109,7 @@ export const CartProvider = ({ children }) => {
         addToCart,
         removeFromCart,
         updateCartItemQuantity,
+        clearCart
       }}
     >
       {children}

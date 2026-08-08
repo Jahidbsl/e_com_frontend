@@ -141,11 +141,22 @@ const Cartpage = () => {
                         <span className="text-indigo-600 dark:text-indigo-400">${total.toFixed(2)}</span>
                     </div>
 
-                    <button
-                        className="w-full py-3.5 px-6 rounded-xl bg-indigo-600 text-white font-bold hover:bg-indigo-700 active:bg-indigo-800 transition shadow-sm"
-                    >
-                        Proceed to Checkout
-                    </button>
+                  <Link 
+    href="/checkout"
+    className="w-full mt-2 flex items-center justify-center gap-2 py-4 px-6 rounded-2xl bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-bold text-base transition-all duration-200 shadow-lg shadow-indigo-600/25 hover:shadow-indigo-600/40 hover:-translate-y-0.5"
+>
+    <span>Proceed to Checkout</span>
+    <svg 
+        xmlns="http://www.w3.org/2000/svg" 
+        className="w-5 h-5" 
+        fill="none" 
+        viewBox="0 0 24 24" 
+        stroke="currentColor" 
+        strokeWidth={2.5}
+    >
+        <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+    </svg>
+</Link>
                 </div>
 
             </div>
