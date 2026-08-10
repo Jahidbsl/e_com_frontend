@@ -13,7 +13,11 @@ const AllProducts = ({ products }) => {
           <div>
             {product.image ? (
               <img
-                src={`${process.env.NEXT_PUBLIC_BASE_URL}${product.image}`}
+                src={
+                  product.image.startsWith("http")
+                    ? product.image
+                    : `${process.env.NEXT_PUBLIC_BASE_URL}${product.image}`
+                }
                 alt={product.name || "Product image"}
                 className="w-full h-[200px] object-cover rounded-md"
               />
